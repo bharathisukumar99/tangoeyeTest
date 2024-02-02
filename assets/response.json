@@ -1,0 +1,374 @@
+{
+    "code": 200,
+    "status": "success",
+    "message": "",
+    "data": [
+        {
+            "_id": "6548e1e3e2ce4c9f6c47ac6e",
+            "checkListName": "333 Sec-2 Afternoon Checklist",
+            "scheduleStartTime": "10:00 AM",
+            "scheduleStartTime_iso": "2023-11-07T10:00:00.000Z",
+            "scheduleEndTime": "10:00 PM",
+            "scheduleEndTime_iso": "2023-11-07T22:00:00.000Z",
+            "checklistStatus": "inprogress",
+            "checkListId": "6544d57e41afbce06f575d4f",
+            "startTime": "2023-11-07T06:07:54.574Z",
+            "submitTime": "",
+            "allowedOverTime": false,
+            "allowedStoreLocation": false,
+            "questionAnswers": [
+                {
+                    "section_id": "6544d4f041afbce06f575afa",
+                    "sectionName": "Section 1",
+                    "questions": [
+                        {
+                            "qno": 1,
+                            "qname": "Descriptive Question?",
+                            "answerType": "descriptive",
+                            "runAI": false,
+                            "allowUploadfromGallery": false,
+                            "runAIDescription": "",
+                            "answers": [
+                                {
+                                    "answer": "",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationAnswer": "",
+                                    "validationType": "",
+                                    "referenceImage": ""
+                                }
+                            ]
+                        },
+                        {
+                            "qno": 2,
+                            "qname": "yes/no Question?",
+                            "answerType": "yes/no",
+                            "answers": [
+                                {
+                                    "answer": "Answer Yes",
+                                    "answeroptionNumber": 0,
+                                    "sopFlag": true,
+                                    "validation": true,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Answer No",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                }
+                            ],
+                            "runAI": false,
+                            "allowUploadfromGallery": false,
+                            "runAIDescription": ""
+                        },
+                        {
+                            "qno": 3,
+                            "qname": "Multiple Choice Single Question?",
+                            "answerType": "multiplechoicesingle",
+                            "answers": [
+                                {
+                                    "answer": "Answer Option A",
+                                    "answeroptionNumber": 0,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Answer Option B",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": true,
+                                    "validation": true,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Answer Option C",
+                                    "answeroptionNumber": 2,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                }
+                            ],
+                            "runAI": false,
+                            "allowUploadfromGallery": false,
+                            "runAIDescription": ""
+                        },
+                        {
+                            "qno": 4,
+                            "qname": "Multiple Choice Multiple Question?",
+                            "answerType": "multiplechoicemultiple",
+                            "answers": [
+                                {
+                                    "answer": "Answer Option A",
+                                    "answeroptionNumber": 0,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Answer Option B",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Answer Option C",
+                                    "answeroptionNumber": 2,
+                                    "sopFlag": true,
+                                    "validation": true,
+                                    "validationType": "Descriptive Answer",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Answer Option D",
+                                    "answeroptionNumber": 3,
+                                    "sopFlag": true,
+                                    "validation": true,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                }
+                            ],
+                            "runAI": false,
+                            "allowUploadfromGallery": false,
+                            "runAIDescription": ""
+                        },
+                        {
+                            "qno": 5,
+                            "qname": "Capture Image Question?",
+                            "answerType": "image",
+                            "answers": [
+                                {
+                                    "answer": "",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationAnswer": "",
+                                    "validationType": "",
+                                    "referenceImage": "https://storage.googleapis.com/sop-detections/checklist/11-93_20-10-2023_11_1697783070_192_1699009458183.168"
+                                }
+                            ],
+                            "runAI": false,
+                            "allowUploadfromGallery": true,
+                            "runAIDescription": ""
+                        },
+                        {
+                            "qno": 6,
+                            "qname": "Capture Video Question?",
+                            "answerType": "image",
+                            "answers": [
+                                {
+                                    "answer": "",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationAnswer": "",
+                                    "validationType": "",
+                                    "referenceImage": ""
+                                }
+                            ],
+                            "runAI": false,
+                            "allowUploadfromGallery": false,
+                            "runAIDescription": ""
+                        }
+                    ]
+                },
+                {
+                    "section_id": "6544d4f041afbce06f575afc",
+                    "sectionName": "Section 2",
+                    "questions": [
+                        {
+                            "qno": 1,
+                            "qname": "Descriptive Question?",
+                            "answerType": "descriptive",
+                            "runAI": false,
+                            "runAIDescription": "",
+                            "allowUploadfromGallery": false,
+                            "answers": [
+                                {
+                                    "answer": "",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationAnswer": "",
+                                    "validationType": "",
+                                    "referenceImage": ""
+                                }
+                            ]
+                        },
+                        {
+                            "qno": 2,
+                            "qname": "yes/no Question?",
+                            "answerType": "yes/no",
+                            "runAI": false,
+                            "runAIDescription": "",
+                            "allowUploadfromGallery": false,
+                            "answers": [
+                                {
+                                    "answer": "Yes",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "No",
+                                    "answeroptionNumber": 2,
+                                    "sopFlag": true,
+                                    "validation": true,
+                                    "validationType": "Descriptive Answer",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                }
+                            ]
+                        },
+                        {
+                            "qno": 3,
+                            "qname": "Multiple Choice Single Question?",
+                            "answerType": "multiplechoicesingle",
+                            "runAI": false,
+                            "runAIDescription": "",
+                            "allowUploadfromGallery": false,
+                            "answers": [
+                                {
+                                    "answer": "Option A",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Option B",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Option C",
+                                    "answeroptionNumber": 3,
+                                    "sopFlag": true,
+                                    "validation": true,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "allowUploadfromGallery": false,
+                                    "validationAnswer": ""
+                                }
+                            ]
+                        },
+                        {
+                            "qno": 4,
+                            "qname": "Multiple Choice Multiple Question?",
+                            "answerType": "multiplechoicemultiple",
+                            "runAI": false,
+                            "runAIDescription": "",
+                            "allowUploadfromGallery": false,
+                            "answers": [
+                                {
+                                    "answer": "Option A",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": true,
+                                    "validation": true,
+                                    "validationType": "Descriptive Answer",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Option B",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": true,
+                                    "validation": true,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Option C",
+                                    "answeroptionNumber": 3,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "allowUploadfromGallery": false,
+                                    "validationAnswer": ""
+                                },
+                                {
+                                    "answer": "Option D",
+                                    "answeroptionNumber": 4,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationType": "Capture Image",
+                                    "referenceImage": "",
+                                    "allowUploadfromGallery": false,
+                                    "validationAnswer": ""
+                                }
+                            ]
+                        },
+                        {
+                            "qno": 5,
+                            "qname": "Capture Image Question?",
+                            "answerType": "image",
+                            "runAI": false,
+                            "runAIDescription": "",
+                            "allowUploadfromGallery": false,
+                            "answers": [
+                                {
+                                    "answer": "",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationAnswer": "",
+                                    "validationType": "",
+                                    "referenceImage": ""
+                                }
+                            ]
+                        },
+                        {
+                            "qno": 6,
+                            "qname": "Capture Video Question?",
+                            "answerType": "image",
+                            "runAI": false,
+                            "runAIDescription": "",
+                            "allowUploadfromGallery": true,
+                            "answers": [
+                                {
+                                    "answer": "",
+                                    "answeroptionNumber": 1,
+                                    "sopFlag": false,
+                                    "validation": false,
+                                    "validationAnswer": "",
+                                    "validationType": "",
+                                    "referenceImage": "https://storage.googleapis.com/sop-detections/checklist/9bff9ce07aa3d000f72b7a7b63186570_1699009724576.jpg"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
