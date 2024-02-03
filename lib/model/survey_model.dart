@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import '../utils/enums.dart';
 
 Response responseFromJson(String str) => Response.fromJson(json.decode(str));
 
@@ -88,7 +91,10 @@ class Section {
         sectionId: json["section_id"],
         sectionName: json["sectionName"],
         questions: List<Question>.from(
-            json["questions"].map((x) => Question.fromJson(x))),
+          json["questions"].map(
+            (x) => Question.fromJson(x),
+          ),
+        ),
       );
 }
 
@@ -97,30 +103,38 @@ class Question {
   String qname;
   String answerType;
   bool runAi;
+  int? selectedAnsweroptionNumber;
+  List<int> selectedAnsweroptionNumbers;
   bool allowUploadfromGallery;
   String runAiDescription;
   List<Answer> answers;
+  List<Answer> userAnswered;
 
   Question({
     required this.qno,
     required this.qname,
     required this.answerType,
     required this.runAi,
+    required this.selectedAnsweroptionNumber,
+    required this.selectedAnsweroptionNumbers,
     required this.allowUploadfromGallery,
     required this.runAiDescription,
     required this.answers,
+    required this.userAnswered,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
-        qno: json["qno"],
-        qname: json["qname"],
-        answerType: json["answerType"],
-        runAi: json["runAI"],
-        allowUploadfromGallery: json["allowUploadfromGallery"],
-        runAiDescription: json["runAIDescription"],
-        answers:
-            List<Answer>.from(json["answers"].map((x) => Answer.fromJson(x))),
-      );
+      qno: json["qno"],
+      qname: json["qname"],
+      selectedAnsweroptionNumber: null,
+      selectedAnsweroptionNumbers: [],
+      answerType: json["answerType"],
+      runAi: json["runAI"],
+      allowUploadfromGallery: json["allowUploadfromGallery"],
+      runAiDescription: json["runAIDescription"],
+      answers:
+          List<Answer>.from(json["answers"].map((x) => Answer.fromJson(x))),
+      userAnswered: []);
 }
 
 class Answer {
@@ -129,7 +143,7 @@ class Answer {
   bool sopFlag;
   bool validation;
   String validationAnswer;
-  ValidationType validationType;
+  String validationType;
   String referenceImage;
   bool? allowUploadfromGallery;
 
@@ -150,28 +164,19 @@ class Answer {
         sopFlag: json["sopFlag"],
         validation: json["validation"],
         validationAnswer: json["validationAnswer"],
-        validationType: validationTypeValues.map[json["validationType"]]!,
+        validationType: validationTypeValues(json["validationType"]),
         referenceImage: json["referenceImage"],
         allowUploadfromGallery: json["allowUploadfromGallery"],
       );
 }
 
-enum ValidationType { CAPTURE_IMAGE, DESCRIPTIVE_ANSWER, EMPTY }
-
-final validationTypeValues = EnumValues({
-  "Capture Image": ValidationType.CAPTURE_IMAGE,
-  "Descriptive Answer": ValidationType.DESCRIPTIVE_ANSWER,
-  "": ValidationType.EMPTY
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
+String validationTypeValues(String type) {
+  switch (type) {
+    case "Capture Image":
+      return "image";
+    case "Descriptive Answer":
+      return "descriptive";
+    default:
+      return "";
   }
 }

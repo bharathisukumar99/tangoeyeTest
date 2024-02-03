@@ -4,6 +4,7 @@ part of 'survey_bloc.dart';
 class SurveyState {
   FetchStatus surveyStatus;
   List<Section> sections;
+
   SurveyState({
     this.surveyStatus = FetchStatus.initial,
     this.sections = const [],

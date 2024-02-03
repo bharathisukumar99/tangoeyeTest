@@ -18,8 +18,12 @@ class MainApp extends StatelessWidget {
       create: (context) => SurveyBloc()..add(FetchSurveyEvent()),
       child: MaterialApp(
         theme: ThemeData(
-            textTheme: GoogleFonts.poppinsTextTheme(),
-            colorSchemeSeed: const Color(0xff00a3ff)),
+          radioTheme: const RadioThemeData(),
+          colorScheme: const ColorScheme.light(
+            primary: Color(0Xff00A3FF),
+          ),
+          textTheme: GoogleFonts.poppinsTextTheme(),
+        ),
         home: const SurveyPage(),
       ),
     );

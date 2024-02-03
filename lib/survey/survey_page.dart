@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tangoeye_survey/utils/constants.dart';
 import 'package:tangoeye_survey/utils/enums.dart';
 import 'package:tangoeye_survey/survey/view/survey_page_view.dart';
 
@@ -32,6 +33,14 @@ class SurveyPage extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
           }
         },
+      ),
+      bottomNavigationBar: FilledButton(
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+            formKey.currentState!.save();
+          }
+        },
+        child: const Text('Review Answers'),
       ),
     );
   }

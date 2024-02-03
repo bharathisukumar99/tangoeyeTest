@@ -10,5 +10,6 @@ enum AnswerType {
   multiplechoicemultiple,
   multiplechoicesingle,
   yesNo,
-  descriptive
+  descriptive,
+  empty
 }

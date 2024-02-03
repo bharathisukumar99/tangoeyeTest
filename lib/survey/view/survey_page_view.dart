@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../model/survey_model.dart';
+import '../../utils/constants.dart';
+import '../../utils/shared_functions.dart';
+import 'survey_question_view.dart';
 
 class SurveyPageView extends StatelessWidget {
   final List<Section> sections;
@@ -8,58 +11,58 @@ class SurveyPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: sections.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: ExpansionTile(
-            collapsedBackgroundColor: const Color.fromARGB(255, 173, 173, 173),
-            //  backgroundColor: const Color.fromARGB(255, 168, 168, 168),
-            shape: const RoundedRectangleBorder(),
-
-            childrenPadding: const EdgeInsets.all(10),
-            title: Text(
-              sections[index].sectionName,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            children: List.generate(
-              sections[index].questions.length,
-              (i) => Card(
-                margin: const EdgeInsets.all(10),
-                surfaceTintColor: Colors.white,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.grey.shade200),
+    return Form(
+      key: formKey,
+      child: ListView.builder(
+        itemCount: sections.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Stack(
+              children: [
+                const ListTile(
+                  selected: true,
+                  selectedTileColor: Color(0xffF9FAFB),
                 ),
-                // padding: const EdgeInsets.all(5),
-                // margin: const EdgeInsets.all(5),
-                // decoration: ShapeDecoration(
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(5),
-                //     side: BorderSide(color: Colors.grey.shade300),
-                //   ),
-                // ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          sections[index].questions[i].qname,
-                          textScaler: const TextScaler.linear(1.2),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w900,
-                          ),
+                ExpansionTile(
+                  collapsedBackgroundColor:
+                      const Color.fromARGB(255, 173, 173, 173).withOpacity(0),
+                  backgroundColor:
+                      const Color.fromARGB(255, 168, 168, 168).withOpacity(0),
+                  shape: const RoundedRectangleBorder(),
+                  childrenPadding: const EdgeInsets.all(10),
+                  title: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          sections[index].sectionName,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                      ]),
+                      ),
+                      Text(
+                        '(${formattedNumber(sections[index].questions.length)}/${formattedNumber(sections[index].questions.length)} questions)',
+                        textScaler: const TextScaler.linear(
+                          0.9,
+                        ),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  children: List.generate(
+                    sections[index].questions.length,
+                    (i) => QuestionView(
+                      question: sections[index].questions[i],
+                      currentSectionIndex: index,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
