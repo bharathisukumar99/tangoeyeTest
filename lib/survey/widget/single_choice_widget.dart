@@ -5,16 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tangoeye_survey/model/survey_model.dart';
 import 'package:tangoeye_survey/survey/bloc/survey_bloc.dart';
 
+import '../../model/selection_info_model.dart';
+
 class RadioWidget extends StatelessWidget {
   final Question question;
-  final int sectionIndex;
-  final bool isValidationType;
-
+  final void Function(SelectionInfo) onUserSave;
   const RadioWidget({
     Key? key,
     required this.question,
-    required this.sectionIndex,
-    required this.isValidationType,
+    required this.onUserSave,
   }) : super(key: key);
 
   @override
@@ -40,18 +39,25 @@ class RadioWidget extends StatelessWidget {
               horizontalTitleGap: 10,
               visualDensity: VisualDensity.compact,
               leading: Radio(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                visualDensity: VisualDensity.compact,
-                value: index,
-                groupValue: question.selectedAnsweroptionNumber,
-                onChanged: (value) {
-                  context.read<SurveyBloc>().add(
-                      SingleSelectAndConfirmationEvent(
-                          sectionIndex: sectionIndex,
-                          questionIndex: question.qno - 1,
-                          selectedOptionNumber: value!));
-                },
-              ),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  visualDensity: VisualDensity.compact,
+                  value: index,
+                  groupValue: question.userAnswered.firstOrNull?.index,
+                  onChanged: (value) =>
+                      onUserSave(SelectionInfo().copyWith(answerIndex: value))
+                  // {
+                  // context.read<SurveyBloc>().add(
+                  //       SetAnswer(
+                  //         info: SelectionInfo(
+                  //           sectionIndex: sectionIndex,
+                  //           questionIndex: question.qno - 1,
+                  //           userAnswer: UserAnswered(
+                  //               index: index, answer: question.answers[index]),
+                  //         ),
+                  //       ),
+                  //     );
+                  // },
+                  ),
             ),
           ),
         ),

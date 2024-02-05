@@ -2,20 +2,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../model/selection_info_model.dart';
 import '../../model/survey_model.dart';
 import '../bloc/survey_bloc.dart';
 
 class MultipleChoiceWidget extends StatelessWidget {
   const MultipleChoiceWidget({
     Key? key,
+    required this.onUserSave,
     required this.question,
-    required this.sectionIndex,
-    required this.isValidationType,
   }) : super(key: key);
-
+  final void Function(SelectionInfo) onUserSave;
   final Question question;
-  final int sectionIndex;
-  final bool isValidationType;
 
   @override
   Widget build(BuildContext context) {
@@ -47,24 +45,28 @@ class MultipleChoiceWidget extends StatelessWidget {
             (index) => CheckboxListTile(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               controlAffinity: ListTileControlAffinity.leading,
-              value: question.selectedAnsweroptionNumbers.contains(index),
-              onChanged: (val) {
-                if (val!) {
-                  context.read<SurveyBloc>().add(
-                        AddMultiSelectEvent(
-                            sectionIndex: sectionIndex,
-                            questionIndex: question.qno - 1,
-                            value: index),
-                      );
-                } else {
-                  context.read<SurveyBloc>().add(
-                        DeleteMultiSelectEvent(
-                            sectionIndex: sectionIndex,
-                            questionIndex: question.qno - 1,
-                            value: index),
-                      );
-                }
-              },
+              value: question.userAnswered
+                  .any((element) => element.index == index),
+              onChanged: (val) => onUserSave(
+                  SelectionInfo().copyWith(answerIndex: index, value: val))
+              // {
+              //   if (val!) {
+              //     context.read<SurveyBloc>().add(
+              //           AddMultiSelectEvent(
+              //               sectionIndex: sectionIndex,
+              //               questionIndex: question.qno - 1,
+              //               value: index),
+              //         );
+              //   } else {
+              //     context.read<SurveyBloc>().add(
+              //           DeleteMultiSelectEvent(
+              //               sectionIndex: sectionIndex,
+              //               questionIndex: question.qno - 1,
+              //               value: index),
+              //         );
+              //   }
+              // },
+              ,
               visualDensity: VisualDensity.compact,
               contentPadding: EdgeInsets.zero,
               checkColor: Colors.blue,

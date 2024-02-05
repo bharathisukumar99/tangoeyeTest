@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'home.dart';
 import 'survey/bloc/survey_bloc.dart';
-import 'survey/survey_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -24,7 +23,7 @@ class MainApp extends StatelessWidget {
           ),
           textTheme: GoogleFonts.poppinsTextTheme(),
         ),
-        home: const SurveyPage(),
+        home: const Home(),
       ),
     );
   }

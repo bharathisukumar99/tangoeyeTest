@@ -6,13 +6,9 @@ abstract class SurveyEvent {}
 class FetchSurveyEvent extends SurveyEvent {}
 
 class SingleSelectAndConfirmationEvent extends SurveyEvent {
-  int sectionIndex;
-  int questionIndex;
-  int selectedOptionNumber;
+  SelectionInfo info;
   SingleSelectAndConfirmationEvent({
-    required this.sectionIndex,
-    required this.questionIndex,
-    required this.selectedOptionNumber,
+    required this.info,
   });
 }
 
@@ -28,13 +24,9 @@ class AddMultiSelectEvent extends SurveyEvent {
 }
 
 class DeleteMultiSelectEvent extends SurveyEvent {
-  int sectionIndex;
-  int questionIndex;
-  int value;
+  SelectionInfo info;
   DeleteMultiSelectEvent({
-    required this.sectionIndex,
-    required this.questionIndex,
-    required this.value,
+    required this.info,
   });
 }
 
@@ -50,16 +42,28 @@ class ConfirmationChoiceEvent extends SurveyEvent {
 }
 
 class ImageUploadEvent extends SurveyEvent {
-  int sectionIndex;
-  int questionIndex;
-  int value;
-  bool isValidationType;
+  SelectionInfo info;
   ImageUploadEvent({
-    required this.sectionIndex,
-    required this.questionIndex,
-    required this.value,
-    required this.isValidationType,
+    required this.info,
   });
 }
 
 class ReviewEvent extends SurveyEvent {}
+
+class ExpandAllExpansionTile extends SurveyEvent {}
+
+class ValidationChecker extends SurveyEvent {}
+
+class SetAnswer extends SurveyEvent {
+  SelectionInfo info;
+  SetAnswer({
+    required this.info,
+  });
+}
+
+class SetValidationAnswer extends SurveyEvent {
+  SelectionInfo info;
+  SetValidationAnswer({
+    required this.info,
+  });
+}

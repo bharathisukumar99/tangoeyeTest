@@ -1,29 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import '../../model/survey_model.dart';
+import 'package:tangoeye_survey/model/selection_info_model.dart';
 
 class SurveyTextField extends StatelessWidget {
-  const SurveyTextField({
-    super.key,
-    required this.question,
-    required this.sectionIndex,
-    required this.isValidationType,
-  });
-  final Question question;
-  final int sectionIndex;
+  const SurveyTextField(
+      {Key? key,
+      required this.isValidationType,
+      this.onChanged,
+      this.validation})
+      : super(key: key);
   final bool isValidationType;
-
+  final bool? validation;
+  final void Function(SelectionInfo)? onChanged;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (val) {
-        if (val != null && val.isEmpty) {
-          return 'Please enter value';
-        }
-        return null;
-      },
-      onSaved: (value) {},
+    return TextField(
+      onChanged: (value) =>
+          onChanged!(SelectionInfo().copyWith(value: value, answerIndex: 0)),
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
       decoration: InputDecoration(
+        errorText: (validation ?? false) ? 'Please enter value' : null,
         isDense: true,
         contentPadding: const EdgeInsets.all(10),
         enabledBorder: OutlineInputBorder(

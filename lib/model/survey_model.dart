@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import '../utils/enums.dart';
+import '../utils/shared_functions.dart';
 
 Response responseFromJson(String str) => Response.fromJson(json.decode(str));
 
@@ -101,14 +104,15 @@ class Section {
 class Question {
   int qno;
   String qname;
-  String answerType;
+  AnswerType answerType;
   bool runAi;
   int? selectedAnsweroptionNumber;
   List<int> selectedAnsweroptionNumbers;
   bool allowUploadfromGallery;
   String runAiDescription;
+  bool? validation;
   List<Answer> answers;
-  List<Answer> userAnswered;
+  List<UserAnswered> userAnswered;
 
   Question({
     required this.qno,
@@ -119,6 +123,7 @@ class Question {
     required this.selectedAnsweroptionNumbers,
     required this.allowUploadfromGallery,
     required this.runAiDescription,
+    required this.validation,
     required this.answers,
     required this.userAnswered,
   });
@@ -128,7 +133,8 @@ class Question {
       qname: json["qname"],
       selectedAnsweroptionNumber: null,
       selectedAnsweroptionNumbers: [],
-      answerType: json["answerType"],
+      validation: null,
+      answerType: answerTypeValue(json["answerType"]),
       runAi: json["runAI"],
       allowUploadfromGallery: json["allowUploadfromGallery"],
       runAiDescription: json["runAIDescription"],
@@ -137,13 +143,33 @@ class Question {
       userAnswered: []);
 }
 
+class UserAnswered {
+  int index;
+  Answer answer;
+  UserAnswered({
+    required this.index,
+    required this.answer,
+  });
+
+  UserAnswered copyWith({
+    int? index,
+    Answer? answer,
+  }) {
+    return UserAnswered(
+      index: index ?? this.index,
+      answer: answer ?? this.answer,
+    );
+  }
+}
+
 class Answer {
   String answer;
   int answeroptionNumber;
   bool sopFlag;
+  bool userValidation;
   bool validation;
   String validationAnswer;
-  String validationType;
+  AnswerType validationType;
   String referenceImage;
   bool? allowUploadfromGallery;
 
@@ -151,6 +177,7 @@ class Answer {
     required this.answer,
     required this.answeroptionNumber,
     required this.sopFlag,
+    required this.userValidation,
     required this.validation,
     required this.validationAnswer,
     required this.validationType,
@@ -164,19 +191,34 @@ class Answer {
         sopFlag: json["sopFlag"],
         validation: json["validation"],
         validationAnswer: json["validationAnswer"],
+        userValidation: true,
         validationType: validationTypeValues(json["validationType"]),
         referenceImage: json["referenceImage"],
         allowUploadfromGallery: json["allowUploadfromGallery"],
       );
-}
 
-String validationTypeValues(String type) {
-  switch (type) {
-    case "Capture Image":
-      return "image";
-    case "Descriptive Answer":
-      return "descriptive";
-    default:
-      return "";
+  Answer copyWith({
+    String? answer,
+    int? answeroptionNumber,
+    bool? sopFlag,
+    bool? userValidation,
+    bool? validation,
+    String? validationAnswer,
+    AnswerType? validationType,
+    String? referenceImage,
+    bool? allowUploadfromGallery,
+  }) {
+    return Answer(
+      answer: answer ?? this.answer,
+      answeroptionNumber: answeroptionNumber ?? this.answeroptionNumber,
+      sopFlag: sopFlag ?? this.sopFlag,
+      userValidation: userValidation ?? this.userValidation,
+      validation: validation ?? this.validation,
+      validationType: validationType ?? this.validationType,
+      validationAnswer: validationAnswer ?? this.validationAnswer,
+      referenceImage: referenceImage ?? this.referenceImage,
+      allowUploadfromGallery:
+          allowUploadfromGallery ?? this.allowUploadfromGallery,
+    );
   }
 }

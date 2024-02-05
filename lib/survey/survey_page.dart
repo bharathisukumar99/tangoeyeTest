@@ -1,47 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tangoeye_survey/utils/constants.dart';
+import 'package:tangoeye_survey/survey/bloc/survey_bloc.dart';
 import 'package:tangoeye_survey/utils/enums.dart';
-import 'package:tangoeye_survey/survey/view/survey_page_view.dart';
 
-import 'bloc/survey_bloc.dart';
+import '../model/survey_model.dart';
+import 'view/survey_page_view.dart';
 
 class SurveyPage extends StatelessWidget {
-  const SurveyPage({super.key});
-
+  const SurveyPage({super.key, required this.sections});
+  final List<Section> sections;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Store Maintenance',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
-      ),
-      body: BlocBuilder<SurveyBloc, SurveyState>(
-        builder: (context, state) {
-          switch (state.surveyStatus) {
-            case FetchStatus.loading:
-              return const Center(child: CircularProgressIndicator());
-            case FetchStatus.success:
-              return SurveyPageView(
-                sections: state.sections,
-              );
-            case FetchStatus.failure:
-              return const Center(child: CircularProgressIndicator());
-            case FetchStatus.initial:
-              return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-      bottomNavigationBar: FilledButton(
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-            formKey.currentState!.save();
-          }
-        },
-        child: const Text('Review Answers'),
-      ),
+    return SurveyPageView(
+      sections: sections,
+      onUserSave: (selectionInfo) {
+        if (selectionInfo.type == AnswerType.image ||
+            selectionInfo.isValidation! &&
+                selectionInfo.validationType == AnswerType.image) {
+          context.read<SurveyBloc>().add(ImageUploadEvent(info: selectionInfo));
+        } else {
+          context.read<SurveyBloc>().add(SetAnswer(info: selectionInfo));
+        }
+      },
     );
   }
 }
