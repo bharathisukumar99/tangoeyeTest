@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home.dart';
 import 'survey/bloc/survey_bloc.dart';
+import 'survey/survey_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -14,7 +15,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SurveyBloc()..add(FetchSurveyEvent()),
+      create: (context) => SurveyBloc(),
       child: MaterialApp(
         theme: ThemeData(
           radioTheme: const RadioThemeData(),
@@ -23,7 +24,11 @@ class MainApp extends StatelessWidget {
           ),
           textTheme: GoogleFonts.poppinsTextTheme(),
         ),
-        home: const Home(),
+        routes: {
+          '/': (context) => const Home(),
+          '/survey': (context) => const SurveyPage(),
+        },
+        initialRoute: '/',
       ),
     );
   }

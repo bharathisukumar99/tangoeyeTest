@@ -5,24 +5,6 @@ abstract class SurveyEvent {}
 
 class FetchSurveyEvent extends SurveyEvent {}
 
-class SingleSelectAndConfirmationEvent extends SurveyEvent {
-  SelectionInfo info;
-  SingleSelectAndConfirmationEvent({
-    required this.info,
-  });
-}
-
-class AddMultiSelectEvent extends SurveyEvent {
-  int sectionIndex;
-  int questionIndex;
-  int value;
-  AddMultiSelectEvent({
-    required this.sectionIndex,
-    required this.questionIndex,
-    required this.value,
-  });
-}
-
 class DeleteMultiSelectEvent extends SurveyEvent {
   SelectionInfo info;
   DeleteMultiSelectEvent({
@@ -30,27 +12,16 @@ class DeleteMultiSelectEvent extends SurveyEvent {
   });
 }
 
-class ConfirmationChoiceEvent extends SurveyEvent {
-  int sectionIndex;
-  int questionIndex;
-  int value;
-  ConfirmationChoiceEvent({
-    required this.sectionIndex,
-    required this.questionIndex,
-    required this.value,
-  });
-}
-
 class ImageUploadEvent extends SurveyEvent {
+  bool isCamera;
   SelectionInfo info;
   ImageUploadEvent({
+    this.isCamera = true,
     required this.info,
   });
 }
 
 class ReviewEvent extends SurveyEvent {}
-
-class ExpandAllExpansionTile extends SurveyEvent {}
 
 class ValidationChecker extends SurveyEvent {}
 
@@ -65,5 +36,12 @@ class SetValidationAnswer extends SurveyEvent {
   SelectionInfo info;
   SetValidationAnswer({
     required this.info,
+  });
+}
+
+class SetCurrentCheckList extends SurveyEvent {
+  int index;
+  SetCurrentCheckList({
+    required this.index,
   });
 }

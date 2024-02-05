@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:tangoeye_survey/utils/enums.dart';
-import '../../model/survey_model.dart';
-import '../../utils/shared_functions.dart';
-import '../widget/index_chip.dart';
-import 'survey_inputs.dart';
 
 class QuestionView extends StatelessWidget {
   const QuestionView(
       {super.key,
       required this.currentWidget,
       required this.validationWidget,
-      required this.indexString,
+      required this.indexChip,
+      required this.errorWidget,
       required this.questionTitle});
 
   final Widget currentWidget;
   final Widget validationWidget;
-  final String indexString;
+  final Widget errorWidget;
   final String questionTitle;
+  final Widget indexChip;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,7 +21,7 @@ class QuestionView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          IndexChip(indexString: indexString),
+          indexChip,
           Card(
             surfaceTintColor: Colors.white,
             color: Colors.white,
@@ -48,39 +45,8 @@ class QuestionView extends StatelessWidget {
                     height: 20,
                   ),
                   currentWidget,
-                  validationWidget
-                  // if (question.selectedAnsweroptionNumber != null)
-                  //   InputView(
-                  //     question: question,
-                  //     type: question
-                  //         .answers[question.selectedAnsweroptionNumber!]
-                  //         .validationType,
-                  //     currentSectionIndex: currentSectionIndex,
-                  //     isValidationType: true,
-                  //   ),
-                  // if (question.userAnswered.isNotEmpty)
-                  //   Builder(
-                  //     builder: (context) {
-                  //       Set<AnswerType> data = Set.from(question
-                  //           .userAnswered
-                  //           .map((e) =>  ));
-                  //       return Column(
-                  //           children: data
-                  //               .map(
-                  //                 (e) => Padding(
-                  //                   padding: const EdgeInsets.symmetric(
-                  //                       vertical: 10),
-                  //                   child: InputView(
-                  //                     question: question,
-                  //                     type: e,
-                  //                     currentSectionIndex: currentSectionIndex,
-                  //                     isValidationType: true,
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //               .toList());
-                  //     },
-                  //   ),
+                  validationWidget,
+                  errorWidget
                 ],
               ),
             ),

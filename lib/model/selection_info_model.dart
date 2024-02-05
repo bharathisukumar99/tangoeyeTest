@@ -11,6 +11,8 @@ class SelectionInfo {
   AnswerType? type;
   bool? isValidation;
   AnswerType? validationType;
+  bool isCamera;
+  bool isReupload;
   SelectionInfo({
     this.sectionIndex,
     this.questionIndex,
@@ -20,6 +22,8 @@ class SelectionInfo {
     this.type,
     this.isValidation,
     this.validationType,
+    this.isCamera = true,
+    this.isReupload = false,
   });
 
   SelectionInfo copyWith({
@@ -31,6 +35,8 @@ class SelectionInfo {
     AnswerType? type,
     bool? isValidation,
     AnswerType? validationType,
+    bool? isCamera,
+    bool? isReupload,
   }) {
     return SelectionInfo(
       sectionIndex: sectionIndex ?? this.sectionIndex,
@@ -41,6 +47,8 @@ class SelectionInfo {
       type: type ?? this.type,
       isValidation: isValidation ?? this.isValidation,
       validationType: validationType ?? this.validationType,
+      isCamera: isCamera ?? this.isCamera,
+      isReupload: isReupload ?? this.isReupload,
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tangoeye_survey/survey/bloc/survey_bloc.dart';
 
 import '../../model/selection_info_model.dart';
 import '../../model/survey_model.dart';
@@ -6,6 +8,7 @@ import '../../utils/constants.dart';
 import '../../utils/enums.dart';
 import '../../utils/shared_functions.dart';
 import '../widget/custom_expansion_tile.dart';
+import '../widget/index_chip.dart';
 import '../widget/section_header.dart';
 import 'survey_inputs.dart';
 import 'survey_question_view.dart';
@@ -18,6 +21,8 @@ class SurveyPageView extends StatelessWidget {
   final void Function(SelectionInfo)? onUserSave;
   @override
   Widget build(BuildContext context) {
+    final overallValidation =
+        context.select((SurveyBloc bloc) => bloc.state.overallValidation);
     return ListView.builder(
       itemCount: sections.length,
       itemBuilder: (context, index) {
@@ -35,45 +40,98 @@ class SurveyPageView extends StatelessWidget {
                     questionCountString(sections[index].questions.length),
                 children: List.generate(
                   sections[index].questions.length,
-                  (i) => QuestionView(
-                    currentWidget: InputView(
-                      isValidationType: false,
-                      validation: sections[index].questions[i].validation,
-                      type: sections[index].questions[i].answerType,
-                      onSave: (selectionInfo) => onUserSave!(
-                          selectionInfo.copyWith(
-                              sectionIndex: index,
-                              questionIndex: i,
-                              type: sections[index].questions[i].answerType,
-                              isValidation: false)),
-                      question: sections[index].questions[i],
-                    ),
-                    validationWidget: sections[index]
-                            .questions[i]
-                            .userAnswered
-                            .isNotEmpty
-                        ? Builder(
-                            builder: (context) {
-                              Set<AnswerType> data = Set.from(sections[index]
-                                  .questions[i]
-                                  .userAnswered
-                                  .map((e) => e.answer.validationType));
-                              return Column(
+                  (i) => IgnorePointer(
+                    ignoring: overallValidation,
+                    child: QuestionView(
+                      indexChip: IndexChip(
+                          indexString:
+                              '${formattedNumber(sections[index].questions[i].qno)}*',
+                          validation: sections[index].questions[i].validated,
+                          extraValidation:
+                              sections[index].questions[i].extraValidated),
+                      currentWidget: InputView(
+                        errorTitle: sections[index].questions[i].validated !=
+                                        null &&
+                                    !sections[index].questions[i].validated! ||
+                                sections[index].questions[i].extraValidated !=
+                                        null &&
+                                    !sections[index]
+                                        .questions[i]
+                                        .extraValidated!
+                            ? "Please enter value"
+                            : null,
+                        isValidationType: false,
+                        validation: sections[index].questions[i].validated,
+                        type: sections[index].questions[i].answerType,
+                        onSave: (selectionInfo) => onUserSave!(
+                            selectionInfo.copyWith(
+                                sectionIndex: index,
+                                questionIndex: i,
+                                type: sections[index].questions[i].answerType,
+                                isValidation: false)),
+                        question: sections[index].questions[i],
+                      ),
+                      errorWidget: sections[index].questions[i].answerType !=
+                                      AnswerType.descriptive &&
+                                  sections[index].questions[i].validated !=
+                                      null &&
+                                  !sections[index].questions[i].validated! ||
+                              sections[index].questions[i].answerType !=
+                                      AnswerType.descriptive &&
+                                  sections[index].questions[i].extraValidated !=
+                                      null &&
+                                  !sections[index].questions[i].extraValidated!
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                '*Please fill in all required fields',
+                                style: TextStyle(color: Colors.red.shade900),
+                              ),
+                            )
+                          : const SizedBox(),
+                      validationWidget: sections[index]
+                              .questions[i]
+                              .userAnswered
+                              .isNotEmpty
+                          ? Builder(
+                              builder: (context) {
+                                Set<AnswerType> data = Set.from(sections[index]
+                                    .questions[i]
+                                    .userAnswered
+                                    .map((e) => e.answer.validationType));
+                                return Column(
                                   children: data
                                       .map(
                                         (e) => Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 10),
                                           child: InputView(
-                                            validation: sections[index]
-                                                .questions[i]
-                                                .validation,
-                                            question:
-                                                sections[index].questions[i],
-                                            type: e,
-                                            isValidationType: true,
-                                            onSave: (selectionInfo) => onUserSave!(
-                                                selectionInfo.copyWith(
+                                              errorTitle: sections[index]
+                                                                  .questions[i]
+                                                                  .validated !=
+                                                              null &&
+                                                          !sections[index]
+                                                              .questions[i]
+                                                              .validated! ||
+                                                      sections[index]
+                                                                  .questions[i]
+                                                                  .extraValidated !=
+                                                              null &&
+                                                          !sections[index]
+                                                              .questions[i]
+                                                              .extraValidated!
+                                                  ? "Please enter value"
+                                                  : null,
+                                              validation: sections[index]
+                                                  .questions[i]
+                                                  .extraValidated,
+                                              question:
+                                                  sections[index].questions[i],
+                                              type: e,
+                                              isValidationType: true,
+                                              onSave: (selectionInfo) {
+                                                onUserSave!(
+                                                  selectionInfo.copyWith(
                                                     sectionIndex: index,
                                                     questionIndex: i,
                                                     type: sections[index]
@@ -86,17 +144,19 @@ class SurveyPageView extends StatelessWidget {
                                                             .userAnsweredIndex!]
                                                         .answer
                                                         .validationType,
-                                                    isValidation: true)),
-                                          ),
+                                                    isValidation: true,
+                                                  ),
+                                                );
+                                              }),
                                         ),
                                       )
-                                      .toList());
-                            },
-                          )
-                        : const SizedBox(),
-                    indexString:
-                        '${formattedNumber(sections[index].questions[i].qno)}*',
-                    questionTitle: sections[index].questions[i].qname,
+                                      .toList(),
+                                );
+                              },
+                            )
+                          : const SizedBox(),
+                      questionTitle: sections[index].questions[i].qname,
+                    ),
                   ),
                 ),
               ),

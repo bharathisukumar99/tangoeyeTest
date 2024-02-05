@@ -17,11 +17,14 @@ class InputView extends StatelessWidget {
   final bool? validation;
   final AnswerType type;
   final bool isValidationType;
+  final String? errorTitle;
+
   const InputView(
       {Key? key,
       required this.onSave,
       required this.question,
       this.validation,
+      required this.errorTitle,
       required this.type,
       required this.isValidationType})
       : super(key: key);
@@ -31,8 +34,10 @@ class InputView extends StatelessWidget {
     switch (type) {
       case AnswerType.descriptive:
         return SurveyTextField(
+          errorTitle: errorTitle,
+          question: question,
           isValidationType: isValidationType,
-          onChanged: (selectionInfo) => onSave,
+          onChanged: (selectionInfo) => onSave(selectionInfo),
           validation: validation,
         );
       case AnswerType.image:

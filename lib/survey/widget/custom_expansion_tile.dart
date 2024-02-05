@@ -14,10 +14,10 @@ class CustomExpansionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-        collapsedBackgroundColor:
-            const Color.fromARGB(255, 173, 173, 173).withOpacity(0),
-        backgroundColor:
-            const Color.fromARGB(255, 168, 168, 168).withOpacity(0),
+        collapsedBackgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
+        iconColor: Colors.grey.shade900,
+        maintainState: true,
         shape: const RoundedRectangleBorder(),
         childrenPadding: const EdgeInsets.all(10),
         title: SectionHeader(title: title, countString: countString),

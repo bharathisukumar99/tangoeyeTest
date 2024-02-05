@@ -110,7 +110,8 @@ class Question {
   List<int> selectedAnsweroptionNumbers;
   bool allowUploadfromGallery;
   String runAiDescription;
-  bool? validation;
+  bool? validated;
+  bool? extraValidated;
   List<Answer> answers;
   List<UserAnswered> userAnswered;
 
@@ -123,7 +124,8 @@ class Question {
     required this.selectedAnsweroptionNumbers,
     required this.allowUploadfromGallery,
     required this.runAiDescription,
-    required this.validation,
+    required this.validated,
+    this.extraValidated,
     required this.answers,
     required this.userAnswered,
   });
@@ -133,7 +135,8 @@ class Question {
       qname: json["qname"],
       selectedAnsweroptionNumber: null,
       selectedAnsweroptionNumbers: [],
-      validation: null,
+      validated: null,
+      extraValidated: null,
       answerType: answerTypeValue(json["answerType"]),
       runAi: json["runAI"],
       allowUploadfromGallery: json["allowUploadfromGallery"],

@@ -48,25 +48,7 @@ class MultipleChoiceWidget extends StatelessWidget {
               value: question.userAnswered
                   .any((element) => element.index == index),
               onChanged: (val) => onUserSave(
-                  SelectionInfo().copyWith(answerIndex: index, value: val))
-              // {
-              //   if (val!) {
-              //     context.read<SurveyBloc>().add(
-              //           AddMultiSelectEvent(
-              //               sectionIndex: sectionIndex,
-              //               questionIndex: question.qno - 1,
-              //               value: index),
-              //         );
-              //   } else {
-              //     context.read<SurveyBloc>().add(
-              //           DeleteMultiSelectEvent(
-              //               sectionIndex: sectionIndex,
-              //               questionIndex: question.qno - 1,
-              //               value: index),
-              //         );
-              //   }
-              // },
-              ,
+                  SelectionInfo().copyWith(answerIndex: index, value: val)),
               visualDensity: VisualDensity.compact,
               contentPadding: EdgeInsets.zero,
               checkColor: Colors.blue,

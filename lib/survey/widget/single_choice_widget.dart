@@ -44,20 +44,7 @@ class RadioWidget extends StatelessWidget {
                   value: index,
                   groupValue: question.userAnswered.firstOrNull?.index,
                   onChanged: (value) =>
-                      onUserSave(SelectionInfo().copyWith(answerIndex: value))
-                  // {
-                  // context.read<SurveyBloc>().add(
-                  //       SetAnswer(
-                  //         info: SelectionInfo(
-                  //           sectionIndex: sectionIndex,
-                  //           questionIndex: question.qno - 1,
-                  //           userAnswer: UserAnswered(
-                  //               index: index, answer: question.answers[index]),
-                  //         ),
-                  //       ),
-                  //     );
-                  // },
-                  ),
+                      onUserSave(SelectionInfo().copyWith(answerIndex: value))),
             ),
           ),
         ),

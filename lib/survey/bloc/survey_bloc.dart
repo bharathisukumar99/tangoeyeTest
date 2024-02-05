@@ -8,6 +8,7 @@ import 'package:tangoeye_survey/core/service.dart';
 import 'package:tangoeye_survey/model/survey_model.dart';
 
 import '../../model/selection_info_model.dart';
+import '../../model/survey_model.dart';
 
 part 'survey_event.dart';
 part 'survey_state.dart';
@@ -16,14 +17,14 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
   SurveyBloc() : super(SurveyState()) {
     on<FetchSurveyEvent>((event, emit) async {
       emit(state.copyWith(
-        surveyStatus: FetchStatus.loading,
-      ));
+          surveyStatus: FetchStatus.loading, overallValidation: false));
       var response = await RemoteService.fetchSurvey();
       if (response.code == 200 && response.status == "success") {
         emit(
           state.copyWith(
-              sections: response.data[0].sections,
-              surveyStatus: FetchStatus.success),
+            storeCheckList: response.data,
+            surveyStatus: FetchStatus.success,
+          ),
         );
       } else {
         emit(
@@ -45,39 +46,68 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
       );
     });
     on<ImageUploadEvent>((event, emit) async {
-      final ImagePicker picker = ImagePicker();
-      final XFile? photo = await picker.pickImage(source: ImageSource.camera);
-      if (photo != null) {
+      if (event.info.isReupload &&
+          state.sections[event.info.sectionIndex!]
+              .questions[event.info.questionIndex!].allowUploadfromGallery) {
         if (event.info.isValidation!) {
-          add(SetValidationAnswer(
-              info: event.info.copyWith(value: photo.path)));
+          add(SetValidationAnswer(info: event.info.copyWith(value: "")));
         } else {
-          add(SetAnswer(info: event.info.copyWith(value: photo.path)));
+          add(SetAnswer(info: event.info.copyWith(value: "")));
+        }
+      } else {
+        final ImagePicker picker = ImagePicker();
+        final XFile? photo;
+        if (event.info.isCamera) {
+          photo = await picker.pickImage(source: ImageSource.camera);
+        } else {
+          photo = await picker.pickImage(source: ImageSource.gallery);
+        }
+
+        if (photo != null) {
+          if (event.info.isValidation!) {
+            add(SetValidationAnswer(
+                info: event.info.copyWith(value: photo.path)));
+          } else {
+            add(SetAnswer(info: event.info.copyWith(value: photo.path)));
+          }
         }
       }
     });
     on<ReviewEvent>((event, emit) {});
+    on<SetCurrentCheckList>((event, emit) {
+      emit(
+          state.copyWith(sections: state.storeCheckList[event.index].sections));
+    });
+
     on<ValidationChecker>((event, emit) {
       for (final (i, section) in state.sections.indexed) {
         for (final (j, Question question) in section.questions.indexed) {
-          if (question.userAnswered.isEmpty) {
+          if (question.userAnswered.isEmpty ||
+              question.userAnswered
+                  .any((element) => element.answer.answer.isEmpty)) {
             emit(state.copyWith(
-                sections: state.sections..[i].questions[j].validation = true));
-            break;
+                sections: state.sections..[i].questions[j].validated = false));
+          } else {
+            emit(state.copyWith(
+                sections: state.sections..[i].questions[j].validated = true));
           }
-          /* for (var element in question.userAnswered) {
-            if (element.answer.answer.isEmpty ||
-                element.answer.validation &&
-                    element.answer.validationType != AnswerType.empty) {
-              emit(state.copyWith(
-                  sections: state.sections
-                    ..[i].questions[j].validation = true));
-            }
-          } */
+          if (question.userAnswered.every((element) =>
+              element.answer.validationAnswer.isEmpty &&
+              element.answer.validation == true)) {
+            emit(state.copyWith(
+                sections: state.sections
+                  ..[i].questions[j].extraValidated = false));
+          } else {
+            emit(state.copyWith(
+                sections: state.sections
+                  ..[i].questions[j].extraValidated = true));
+          }
         }
       }
-
-      print(state.sections[0].questions[0].validation);
+      var validated = state.sections.every((element) => element.questions.every(
+          (element) =>
+              element.validated == true && element.extraValidated == true));
+      emit(state.copyWith(overallValidation: validated));
     });
     on<SetAnswer>(setAnswer);
     on<SetValidationAnswer>((event, emit) {
