@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -7,17 +5,25 @@ import 'package:tangoeye_survey/utils/enums.dart';
 import 'package:tangoeye_survey/core/service.dart';
 import 'package:tangoeye_survey/model/survey_model.dart';
 
+import '../../model/scrolling_index.dart';
 import '../../model/selection_info_model.dart';
-import '../../model/survey_model.dart';
 
 part 'survey_event.dart';
 part 'survey_state.dart';
 
 class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
-  SurveyBloc() : super(SurveyState()) {
+  SurveyBloc()
+      : super(
+          SurveyState(
+            scrollingIndex: ScrollingIndex(sectionIndex: 0, questionIndex: 0),
+          ),
+        ) {
     on<FetchSurveyEvent>((event, emit) async {
-      emit(state.copyWith(
-          surveyStatus: FetchStatus.loading, overallValidation: false));
+      emit(
+        state.copyWith(
+            surveyStatus: FetchStatus.loading,
+            overallValidation: OverallValidation.initial),
+      );
       var response = await RemoteService.fetchSurvey();
       if (response.code == 200 && response.status == "success") {
         emit(
@@ -34,6 +40,7 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
     });
 
     on<DeleteMultiSelectEvent>((event, emit) async {
+      emit(state.copyWith(overallValidation: OverallValidation.initial));
       SelectionInfo data = event.info;
       emit(
         state.copyWith(
@@ -46,6 +53,7 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
       );
     });
     on<ImageUploadEvent>((event, emit) async {
+      emit(state.copyWith(overallValidation: OverallValidation.initial));
       if (event.info.isReupload &&
           state.sections[event.info.sectionIndex!]
               .questions[event.info.questionIndex!].allowUploadfromGallery) {
@@ -75,11 +83,13 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
     });
     on<ReviewEvent>((event, emit) {});
     on<SetCurrentCheckList>((event, emit) {
-      emit(
-          state.copyWith(sections: state.storeCheckList[event.index].sections));
+      emit(state.copyWith(
+          sections: state.storeCheckList[event.index].sections,
+          overallValidation: OverallValidation.initial));
     });
 
     on<ValidationChecker>((event, emit) {
+      emit(state.copyWith(overallValidation: OverallValidation.initial));
       for (final (i, section) in state.sections.indexed) {
         for (final (j, Question question) in section.questions.indexed) {
           if (question.userAnswered.isEmpty ||
@@ -107,10 +117,31 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
       var validated = state.sections.every((element) => element.questions.every(
           (element) =>
               element.validated == true && element.extraValidated == true));
-      emit(state.copyWith(overallValidation: validated));
+      var sectionIndex = state.sections.indexWhere((s) =>
+          s.questions.indexWhere((element) =>
+              element.validated == false || element.extraValidated == false) !=
+          -1);
+      var questionIndex = sectionIndex != -1
+          ? state.sections[sectionIndex].questions.indexWhere(
+              (element) =>
+                  element.validated == false || element.extraValidated == false,
+            )
+          : -1;
+
+      emit(
+        state.copyWith(
+            overallValidation: validated
+                ? OverallValidation.success
+                : OverallValidation.failure,
+            scrollingIndex: sectionIndex != -1 || questionIndex != -1
+                ? ScrollingIndex(
+                    sectionIndex: sectionIndex, questionIndex: questionIndex)
+                : ScrollingIndex(sectionIndex: 0, questionIndex: 0)),
+      );
     });
     on<SetAnswer>(setAnswer);
     on<SetValidationAnswer>((event, emit) {
+      emit(state.copyWith(overallValidation: OverallValidation.initial));
       SelectionInfo data = event.info;
       var userAnswered = state.sections[data.sectionIndex!]
           .questions[data.questionIndex!].userAnswered;
@@ -130,6 +161,7 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
   }
 
   void setAnswer(event, emit) {
+    emit(state.copyWith(overallValidation: OverallValidation.initial));
     SelectionInfo data = event.info;
     if (data.type == AnswerType.image || data.type == AnswerType.descriptive) {
       emit(state.copyWith(
@@ -162,14 +194,12 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
         state.copyWith(
           sections: state.sections
             ..[data.sectionIndex!]
-                    .questions[data.questionIndex!]
-                    .userAnswered[0] =
-                UserAnswered(
-                    index: data.answerIndex!,
-                    answer: state
-                        .sections[data.sectionIndex!]
-                        .questions[data.questionIndex!]
-                        .answers[data.answerIndex!]),
+                .questions[data.questionIndex!]
+                .userAnswered[0] = UserAnswered(
+              index: data.answerIndex!,
+              answer: state.sections[data.sectionIndex!]
+                  .questions[data.questionIndex!].answers[data.answerIndex!],
+            ),
         ),
       );
     }

@@ -39,3 +39,8 @@ AnswerType answerTypeValue(String type) {
       return AnswerType.empty;
   }
 }
+
+void scrollTo(GlobalKey itemKey) async {
+  final context = itemKey.currentContext!;
+  await Scrollable.ensureVisible(context);
+}

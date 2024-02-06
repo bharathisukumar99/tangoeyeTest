@@ -4,27 +4,31 @@ part of 'survey_bloc.dart';
 class SurveyState {
   FetchStatus surveyStatus;
   List<Section> sections;
-  bool overallValidation;
+  OverallValidation overallValidation;
+  ScrollingIndex scrollingIndex;
 
   List<StoreCheckList> storeCheckList;
 
   SurveyState({
     this.surveyStatus = FetchStatus.initial,
     this.sections = const [],
-    this.overallValidation = false,
+    this.overallValidation = OverallValidation.initial,
+    required this.scrollingIndex,
     this.storeCheckList = const [],
   });
 
   SurveyState copyWith({
     FetchStatus? surveyStatus,
     List<Section>? sections,
-    bool? overallValidation,
+    OverallValidation? overallValidation,
+    ScrollingIndex? scrollingIndex,
     List<StoreCheckList>? storeCheckList,
   }) {
     return SurveyState(
       surveyStatus: surveyStatus ?? this.surveyStatus,
       sections: sections ?? this.sections,
       overallValidation: overallValidation ?? this.overallValidation,
+      scrollingIndex: scrollingIndex ?? this.scrollingIndex,
       storeCheckList: storeCheckList ?? this.storeCheckList,
     );
   }

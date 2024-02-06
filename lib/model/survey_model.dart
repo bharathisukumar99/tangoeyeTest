@@ -82,17 +82,20 @@ class StoreCheckList {
 class Section {
   String sectionId;
   String sectionName;
+  ExpansionTileController controller;
   List<Question> questions;
 
   Section({
     required this.sectionId,
     required this.sectionName,
+    required this.controller,
     required this.questions,
   });
 
   factory Section.fromJson(Map<String, dynamic> json) => Section(
         sectionId: json["section_id"],
         sectionName: json["sectionName"],
+        controller: ExpansionTileController(),
         questions: List<Question>.from(
           json["questions"].map(
             (x) => Question.fromJson(x),
@@ -106,6 +109,7 @@ class Question {
   String qname;
   AnswerType answerType;
   bool runAi;
+  GlobalKey key;
   int? selectedAnsweroptionNumber;
   List<int> selectedAnsweroptionNumbers;
   bool allowUploadfromGallery;
@@ -120,6 +124,7 @@ class Question {
     required this.qname,
     required this.answerType,
     required this.runAi,
+    required this.key,
     required this.selectedAnsweroptionNumber,
     required this.selectedAnsweroptionNumbers,
     required this.allowUploadfromGallery,
@@ -133,6 +138,7 @@ class Question {
   factory Question.fromJson(Map<String, dynamic> json) => Question(
       qno: json["qno"],
       qname: json["qname"],
+      key: GlobalKey(),
       selectedAnsweroptionNumber: null,
       selectedAnsweroptionNumbers: [],
       validated: null,
@@ -144,6 +150,41 @@ class Question {
       answers:
           List<Answer>.from(json["answers"].map((x) => Answer.fromJson(x))),
       userAnswered: []);
+
+  Question copyWith({
+    int? qno,
+    String? qname,
+    AnswerType? answerType,
+    bool? runAi,
+    GlobalKey? key,
+    int? selectedAnsweroptionNumber,
+    List<int>? selectedAnsweroptionNumbers,
+    bool? allowUploadfromGallery,
+    String? runAiDescription,
+    bool? validated,
+    bool? extraValidated,
+    List<Answer>? answers,
+    List<UserAnswered>? userAnswered,
+  }) {
+    return Question(
+      qno: qno ?? this.qno,
+      qname: qname ?? this.qname,
+      answerType: answerType ?? this.answerType,
+      runAi: runAi ?? this.runAi,
+      key: key ?? this.key,
+      selectedAnsweroptionNumber:
+          selectedAnsweroptionNumber ?? this.selectedAnsweroptionNumber,
+      selectedAnsweroptionNumbers:
+          selectedAnsweroptionNumbers ?? this.selectedAnsweroptionNumbers,
+      allowUploadfromGallery:
+          allowUploadfromGallery ?? this.allowUploadfromGallery,
+      runAiDescription: runAiDescription ?? this.runAiDescription,
+      validated: validated ?? this.validated,
+      extraValidated: extraValidated ?? this.extraValidated,
+      answers: answers ?? this.answers,
+      userAnswered: userAnswered ?? this.userAnswered,
+    );
+  }
 }
 
 class UserAnswered {

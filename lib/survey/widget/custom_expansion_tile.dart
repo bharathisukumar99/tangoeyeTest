@@ -6,14 +6,17 @@ class CustomExpansionTile extends StatelessWidget {
       {super.key,
       required this.children,
       required this.title,
-      required this.countString});
+      required this.countString,
+      required this.controller});
 
   final String title;
   final String countString;
   final List<Widget> children;
+  final ExpansionTileController controller;
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+        controller: controller,
         collapsedBackgroundColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         iconColor: Colors.grey.shade900,

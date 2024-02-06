@@ -13,3 +13,5 @@ enum AnswerType {
   descriptive,
   empty
 }
+
+enum OverallValidation { initial, failure, success }
